@@ -18,3 +18,15 @@ export async function saveWarehousApi(item) {
     })
     return await response.json()
 }
+
+export async function requestWarehousApi(item) {
+  let response = await fetch(`${ URL }/warehous-order`, {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item)
+  })
+  return await response.json()
+}
