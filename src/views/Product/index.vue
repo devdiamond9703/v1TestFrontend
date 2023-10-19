@@ -4,7 +4,7 @@
             <h2>Product List</h2>
         </v-col>
         <v-col class="text-right">
-            <v-btn color="success" icon="mdi-plus" @click="product.dialog.add = true" ></v-btn>
+            <v-btn color="success" icon="mdi-plus" @click="addBtn" ></v-btn>
         </v-col>
     </v-row>
 
@@ -95,9 +95,9 @@
                     <v-col cols="12">
                         <v-divider :thickness="10" class="border-opacity-50"></v-divider>
                         <v-data-table
-                            v-model:items-per-page="productMaterial.page"
-                            :headers="productMaterial.headers"
-                            :items="productMaterial.all"
+                            v-model:items-per-page="materialsByProduct.page"
+                            :headers="materialsByProduct.headers"
+                            :items="materialsByProduct.all"
                         >
                         </v-data-table>
                     </v-col>
@@ -105,7 +105,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blur" variant="text" @click="productMaterial.dialog.add = false">
+                    <v-btn color="blur" variant="text" @click="materialsByProduct.dialog.add = false">
                         Close
                     </v-btn>
                 </v-card-actions>
@@ -146,11 +146,17 @@
                         name: null,
                         code:null,
                     },
+                    defaultField: {
+                        id: null,
+                        name: null,
+                        code:null,
+                    }
                 },
                 materialsByProduct: {
                     all: [],
                     headers: [
-                        { title: 'Name',  sortable: false, key: 'name'},
+                        { title: 'Name', align: 'start', sortable: false, key: 'material_name'},
+                        { title: 'Quantity', align: 'end', sortable: false, key: 'quantity'},
                     ],
                     dialog: {
                         add: false
@@ -169,18 +175,6 @@
                 material: {
                     all: []
                 },
-                productMaterial: {
-                    all: [],
-                    headers: [
-                        { title: 'Name', align: 'start', sortable: false, key: 'material_name'},
-                        { title: 'Quantity', align: 'end', sortable: false, key: 'quantity'},
-                    ],
-                    field: {
-                        product_material_id: null,
-                        material_name: null,
-                        quantity: null
-                    }
-                }
             }
         },
 
@@ -188,10 +182,14 @@
             async getProductAll() {
                 this.product.all = await getProductAllApi();
             },
+            addBtn() {
+                this.product.field = { ...this.product.defaultField }
+                this.product.dialog.add = true
+            },
             async saveProduct() {
                 let response = await saveProductApi(this.product.field);
                 if(response.status) {
-                    this.getProductsAll(),
+                    this.getProductAll(),
                     this.product.dialog.add = false
                 }
             },
@@ -201,13 +199,14 @@
                 this.materialsByProduct.field.product_id = item.id
                 this.materialsByProduct.productField.name = item.name
                 this.material.all = await getMaterialAllApi();
-                this.productMaterial.all = await getMaterialByProductApi(item.id);
+                this.materialsByProduct.all = await getMaterialByProductApi(item.id);
             },
-
             async saveMaterialByProduct() {
                 let response = await saveMaterialByProductApi(this.materialsByProduct.field);
                 if(response.status) {
-                    this.productMaterial.all = await getMaterialByProductApi(this.materialsByProduct.field.product_id);
+                    this.materialsByProduct.field.quantity = null
+                    this.materialsByProduct.field.material_id = null
+                    this.materialsByProduct.all = await getMaterialByProductApi(this.materialsByProduct.field.product_id);
                 }
             }
         },

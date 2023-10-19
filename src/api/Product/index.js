@@ -33,7 +33,7 @@ export async function saveMaterialByProductApi(item) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(item)
     })
     return await response.json()
 }

@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-app id="inspire">
-<v-navigation-drawer color="#263544" v-model="drawer" permanent>
+      <v-navigation-drawer color="#263544" v-model="drawer" permanent>
         <v-list>
           <v-list-item
             title="Admin"
@@ -12,8 +12,11 @@
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
-          <v-list-item :to="{name: 'app.dashboard'}" prepend-icon="mdi-folder" title="Dashboard"  value="My"></v-list-item>
-          <v-list-item :to="{name: 'app.product'}" prepend-icon="mdi-account-multiple" title="Product" value="shared"></v-list-item>
+          <v-list-item :to="{name: 'app.dashboard'}" prepend-icon="mdi-folder" title="Dashboard"  value="dashboard"></v-list-item>
+          <v-list-item :to="{name: 'app.material'}" prepend-icon="mdi-account-multiple" title="Material" value="material"></v-list-item>
+          <v-list-item :to="{name: 'app.product'}" prepend-icon="mdi-account-multiple" title="Product" value="product"></v-list-item>
+          <v-list-item :to="{name: 'app.warehous'}" prepend-icon="mdi-account-multiple" title="Warehous" value="warehous"></v-list-item>
+          <v-list-item :to="{name: 'app.order'}" prepend-icon="mdi-account-multiple" title="Order" value="order"></v-list-item>
         </v-list>
 
         <template v-slot:append>
